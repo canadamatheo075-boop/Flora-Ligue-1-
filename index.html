@@ -47,7 +47,6 @@ async function showAdminScores(){const area=document.getElementById('adminArea')
 document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('button[data-page]');if(b){page=b.dataset.page;selected=null;render()}});
 document.getElementById('adminOpen').addEventListener('click',()=>{page='admin';render();window.scrollTo({top:0,behavior:'smooth'})});
 document.getElementById('adminOpen').textContent='🔐 Admin';
-if(SUPABASE_ANON_KEY==='sb_publishable_XQMiBUn5hSK3kj2lIVYwTg_pBSbla91'){render();document.getElementById('content').insertAdjacentHTML('afterbegin','<div class="panel" style="margin-bottom:12px">Le site est prêt à être connecté. Il reste à ajouter la clé Publishable Supabase dans le fichier.</div>');}
-else {const tag=document.createElement('script');tag.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';tag.onload=()=>{sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);refreshData()};tag.onerror=()=>{document.getElementById('content').innerHTML='<div class="panel">Impossible de charger la bibliothèque Supabase. Vérifie ta connexion Internet.</div>'};document.head.appendChild(tag)}
+const tag = document.createElement('script');tag.src='https://cdn.jsdelivr.net/npm/@supabase-js@2';tag.onload=()=>{sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);refreshData()};document.head.appendChild(tag);
 </script>
 </body></html>
