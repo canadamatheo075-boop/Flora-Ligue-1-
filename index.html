@@ -1,222 +1,53 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Floraligue 1</title>
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#08111f"><title>Floraligue 1 — Le championnat</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#081321;color:#fff;font-family:Arial,sans-serif}
-header{background:#102944;padding:25px;text-align:center;border-bottom:3px solid #328cff}
-h1{margin:0;font-size:30px}
-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:15px;background:#0c1d31}
-button{background:#287cf0;color:white;border:0;border-radius:9px;padding:11px 15px;font-weight:bold;cursor:pointer}
-main{max-width:1000px;margin:auto;padding:18px}
-.hero{background:linear-gradient(120deg,#12457b,#101c32);padding:28px;border-radius:16px}
-.card{background:#13243a;border:1px solid #29425f;border-radius:12px;padding:15px;margin:10px 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
-.club{cursor:pointer}
-.logo{display:inline-block;background:#286be0;padding:12px;border-radius:50%;margin-right:8px}
-.match{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #30445d;padding:13px 0}
-.score{font-weight:bold;color:#5de3ae}
-table{border-collapse:collapse;width:100%;font-size:13px}
-th,td{padding:10px 6px;text-align:left;border-bottom:1px solid #30445d}
-.tablewrap{overflow-x:auto}
-input,select{width:100%;padding:12px;background:#09192a;border:1px solid #48627e;border-radius:8px;color:white;margin:8px 0 15px}
-label{display:block;margin-top:10px}
-.error{background:#58202b;padding:15px;border-radius:10px}
-footer{text-align:center;padding:25px;color:#8fa8c5}
-</style>
-</head>
-<body>
-<header>
-<h1>⚽ FLORALIGUE 1</h1>
-<p>Le championnat de la Floraligue</p>
-</header>
-<nav>
-<button onclick="show('home')">Accueil</button>
-<button onclick="show('clubs')">Clubs</button>
-<button onclick="show('matches')">Matchs</button>
-<button onclick="show('table')">Classement</button>
-<button onclick="show('admin')">🔐 Admin</button>
-</nav>
-<main id="app">Chargement...</main>
-<footer>Floraligue 1 • Championnat fictif</footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const URL_DB="https://gyfkukllzsyefckdmjte.supabase.co";
-const PUBLIC_KEY="sb_publishable_XQMiBUn5hSK3kj2lIVYwTg_pBSbla91";
-const db=window.supabase.createClient(URL_DB,PUBLIC_KEY);
-let clubs=[],players=[],matches=[],ranking=[];
-let current="home";
-const app=document.getElementById("app");
+:root{--bg:#08111f;--panel:#101d30;--line:#263b57;--muted:#96aac5;--blue:#438cff;--mint:#55e0b0;--gold:#f4c96b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#142e4c,#08111f 55%);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#f3f7ff}button,input{font:inherit}button{cursor:pointer}.app{max-width:1050px;margin:auto;padding:18px 14px 90px}header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.brand{display:flex;align-items:center;gap:11px}.mark{width:48px;height:48px;border-radius:15px;background:linear-gradient(135deg,#61b5ff,#3563ed);display:grid;place-items:center;font-weight:1000;font-size:19px;box-shadow:0 8px 25px #2867cf55}.brand h1{font-size:19px;margin:0}.brand p{font-size:10px;color:var(--muted);margin:3px 0 0;letter-spacing:2px}.tag{font-size:11px;border:1px solid var(--line);border-radius:99px;padding:8px 10px;color:#c7d7ec}nav{display:flex;gap:6px;overflow:auto;padding:6px;background:#0a1728;border:1px solid var(--line);border-radius:15px;margin-bottom:17px;position:sticky;top:7px;z-index:5}nav button{flex:1;min-width:68px;border:0;border-radius:10px;background:transparent;color:var(--muted);padding:11px 8px;font-size:12px;font-weight:800}nav button.active{background:linear-gradient(135deg,#367ff0,#4b9dff);color:white}.hero{padding:23px;border-radius:22px;background:linear-gradient(115deg,#183d65,#132943 60%,#16243a);border:1px solid #31527a}.eyebrow{color:#82bdff;font-size:10px;letter-spacing:2px;font-weight:850}.hero h2{font-size:clamp(28px,6vw,42px);margin:9px 0;line-height:1.05}.hero p{color:#c0d0e6;line-height:1.55;font-size:13px;max-width:600px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0 23px}.stat,.panel{padding:15px;background:var(--panel);border:1px solid var(--line);border-radius:16px}.stat strong{font-size:23px;display:block}.stat span{font-size:10px;color:var(--muted)}.head{display:flex;justify-content:space-between;align-items:end;gap:10px;margin:22px 0 12px}.head h3{margin:0;font-size:18px}.head small{font-size:10px;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.club{display:flex;align-items:center;gap:9px;min-width:0;text-align:left;padding:11px 9px;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:white}.crest{flex:0 0 39px;width:39px;height:39px;display:grid;place-items:center;border-radius:12px;background:#203b5b;border:1px solid #3d6b9a;font-size:10px;font-weight:950;color:#a9d4ff}.club b{font-size:11px;line-height:1.3}.muted{font-size:10px;color:var(--muted);margin-top:4px}.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}.match{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}.match:last-child{border:0}.teams{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:750}.mini{width:28px;height:28px;flex:0 0 28px;border-radius:8px;background:#203b5b;display:grid;place-items:center;font-size:8px;font-weight:900;color:#b4d9ff}.time{font-size:10px;color:var(--gold);text-align:right;white-space:nowrap}.search{width:100%;background:#0b1829;border:1px solid var(--line);border-radius:11px;padding:12px;color:white;margin-bottom:12px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;min-width:470px;border-collapse:collapse;background:var(--panel)}th,td{padding:11px 9px;text-align:center;border-bottom:1px solid var(--line);font-size:11px}th{color:var(--muted);font-size:9px;text-transform:uppercase;background:#0d192a}td:nth-child(2),th:nth-child(2){text-align:left}.pts{color:var(--mint);font-weight:900}.players{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.player{display:flex;justify-content:space-between;gap:8px;background:#0c1929;border:1px solid var(--line);padding:11px;border-radius:11px;font-size:11px}.player small{display:block;color:var(--muted);margin-top:4px}.number{font-size:16px;font-weight:900;color:#81b9ff}.back,.primary,.secondary{border-radius:10px;padding:11px 13px;font-weight:800;font-size:12px}.back,.secondary{border:1px solid var(--line);background:#14263d;color:white}.primary{border:0;background:var(--mint);color:#06251c}.hide{display:none!important}.notice{font-size:11px;line-height:1.5;color:var(--muted);margin-top:13px}.field{display:block;width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:#091626;color:white;margin:7px 0 13px}footer{text-align:center;color:#637893;font-size:10px;margin-top:27px}@media(max-width:650px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cards{grid-template-columns:1fr}.players{grid-template-columns:1fr}.tag{display:none}.app{padding:12px 10px 85px}.hero{padding:19px}}
 
-function esc(s){
-return String(s??"").replace(/[&<>"']/g,c=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",
-'"':"&quot;","'":"&#39;"
-}[c]));
-}
-function name(id){
-return clubs.find(c=>String(c.id)===String(id))?.name||"Club";
-}
-function show(page){
-current=page;
-render();
-window.scrollTo(0,0);
-}
-async function load(){
-try{
-const results=await Promise.all([
-db.from("clubs").select("*"),
-db.from("players").select("*"),
-db.from("matches").select("*"),
-db.from("classement").select("*")
-]);
-for(const r of results)if(r.error)throw r.error;
-[clubs,players,matches,ranking]=results.map(r=>r.data||[]);
-ranking.sort((a,b)=>(b.points||0)-(a.points||0)||(b.difference_buts||0)-(a.difference_buts||0));
-render();
-}catch(e){
-app.innerHTML='<div class="error">Erreur de connexion : '+esc(e.message)+'</div>';
-}
-}
-function clubCards(){
-return '<div class="grid">'+clubs.map(c=>`
-<div class="card club" onclick="clubDetail('${esc(c.id)}')">
-<span class="logo">⚽</span><b>${esc(c.name)}</b>
-<p>Voir les joueurs →</p>
-</div>`).join("")+"</div>";
-}
-function render(){
-if(current==="home"){
-app.innerHTML=`
-<div class="hero">
-<h2>Bienvenue en Floraligue 1</h2>
-<p>Le championnat de tes 18 clubs !</p>
-</div>
-<div class="grid">
-<div class="card"><h2>${clubs.length}</h2>Clubs</div>
-<div class="card"><h2>${players.length}</h2>Joueurs</div>
-<div class="card"><h2>${matches.filter(m=>m.played).length}</h2>Matchs joués</div>
-</div>
-<h2>Les clubs</h2>${clubCards()}`;
-}
-if(current==="clubs"){
-app.innerHTML="<h2>Les clubs</h2>"+clubCards();
-}
-if(current==="matches"){
-app.innerHTML=`
-<h2>Matchs et résultats</h2>
-<div class="card">
-${matches.map(m=>`
-<div class="match">
-<span>${esc(name(m.home_club_id))}</span>
-<span class="score">${m.played?esc(m.home_score)+" - "+esc(m.away_score):"À jouer"}</span>
-<span>${esc(name(m.away_club_id))}</span>
-</div>`).join("")}
-</div>`;
-}
-if(current==="table"){
-app.innerHTML=`
-<h2>Classement</h2>
-<div class="card tablewrap">
-<table>
-<tr><th>#</th><th>Club</th><th>MJ</th><th>V</th><th>N</th><th>D</th><th>Diff.</th><th>Pts</th></tr>
-${ranking.map((r,i)=>`
-<tr>
-<td>${i+1}</td>
-<td>${esc(r.club)}</td>
-<td>${r.matchs_joues||0}</td>
-<td>${r.victoires||0}</td>
-<td>${r.nuls||0}</td>
-<td>${r.defaites||0}</td>
-<td>${r.difference_buts||0}</td>
-<td><b>${r.points||0}</b></td>
-</tr>`).join("")}
-</table></div>`;
-}
-if(current==="admin")admin();
-}
-function clubDetail(id){
-const c=clubs.find(x=>String(x.id)===String(id));
-if(!c)return;
-const ps=players.filter(p=>String(p.club_id)===String(id));
-app.innerHTML=`
-<button onclick="show('clubs')">← Retour</button>
-<h2>${esc(c.name)}</h2>
-<h3>Joueurs (${ps.length})</h3>
-<div class="grid">
-${ps.map(p=>`<div class="card">${esc(p.name)}</div>`).join("")}
-</div>`;
-}
-async function admin(){
-app.innerHTML='<div class="card">Vérification...</div>';
-const {data:{session}}=await db.auth.getSession();
-if(!session){
-app.innerHTML=`
-<h2>🔐 Administration</h2>
-<div class="card">
-<p>Connexion réservée à l'administrateur.</p>
-<label>E-mail</label>
-<input id="email" type="email">
-<label>Mot de passe</label>
-<input id="password" type="password">
-<button onclick="login()">Se connecter</button>
-</div>`;
-return;
-}
-const {data:{user}}=await db.auth.getUser();
-if(!user){await db.auth.signOut();return admin()}
-const {data:a,error}=await db.from("admin_users")
-.select("user_id").eq("user_id",user.id).maybeSingle();
-if(error||!a){
-app.innerHTML='<div class="error">Compte non autorisé.</div><button onclick="logout()">Déconnexion</button>';
-return;
-}
-app.innerHTML=`
-<h2>Administration des scores</h2>
-<div class="card">
-<p>✅ Compte administrateur connecté</p>
-<label>Match</label>
-<select id="match">
-${matches.map(m=>`
-<option value="${esc(m.id)}">${esc(name(m.home_club_id))} - ${esc(name(m.away_club_id))}</option>`).join("")}
-</select>
-<label>Buts domicile</label>
-<input type="number" id="home" min="0" value="0">
-<label>Buts extérieur</label>
-<input type="number" id="away" min="0" value="0">
-<button onclick="saveScore()">Enregistrer le score</button>
-<button onclick="logout()">Déconnexion</button>
-</div>`;
-}
-async function login(){
-const email=document.getElementById("email").value.trim();
-const password=document.getElementById("password").value;
-const {error}=await db.auth.signInWithPassword({email,password});
-if(error)alert("Erreur : "+error.message);
-else admin();
-}
-async function logout(){
-await db.auth.signOut();
-admin();
-}
-async function saveScore(){
-const id=document.getElementById("match").value;
-const h=Number(document.getElementById("home").value);
-const a=Number(document.getElementById("away").value);
-if(!Number.isInteger(h)||!Number.isInteger(a)||h<0||a<0){
-alert("Scores invalides");
-return;
-}
-const {error}=await db.from("matches")
-.update({home_score:h,away_score:a,played:true}).eq("id",id);
-if(error){alert("Erreur : "+error.message);return;}
-alert("Score enregistré !");
-await load();
-}
-load();
+.admin-fab{position:fixed;right:14px;bottom:14px;z-index:50;background:#2e7ef4;color:white;border:1px solid #74b5ff;border-radius:999px;padding:12px 16px;font-weight:800;box-shadow:0 8px 24px #0008}
+.admin-modal{position:fixed;inset:0;z-index:60;background:#020712eF;display:none;align-items:center;justify-content:center;padding:16px}
+.admin-box{width:min(100%,460px);background:#0e1d30;border:1px solid #3b5d7c;border-radius:20px;padding:20px;box-shadow:0 20px 60px #0009}
+.admin-box input{width:100%;padding:12px;margin:7px 0 13px;background:#071321;color:#fff;border:1px solid #35506c;border-radius:10px}
+.admin-box button{padding:11px 14px;border:0;border-radius:10px;background:#2f81f7;color:white;font-weight:800}
+.admin-note{font-size:12px;line-height:1.5;color:#b5c7dc}
+</style></head><body><div class="app">
+<header><div class="brand"><div class="mark">FL</div><div><h1>FLORALIGUE 1</h1><p>LA LIGUE · SAISON 2026</p></div></div><div class="tag">Championnat communautaire</div></header>
+<nav id="nav"><button data-page="home" class="active">Accueil</button><button data-page="clubs">Clubs</button><button data-page="matches">Matchs</button><button data-page="table">Classement</button><button data-page="profile">Profil</button></nav>
+<main id="content"></main><footer>FLORALIGUE 1 · Championnat connecté à Supabase.</footer></div>
+<button class="admin-fab" id="adminOpen">🔐 Admin</button>
+<script>
+// Floraligue 1 — version connectée à Supabase.
+// Clé publique Supabase (aucune clé secrète dans ce fichier).
+const SUPABASE_URL = 'https://gyfkukllzsyefckdmjte.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_XQMiBUn5hSK3kj2lIVYwTg_pBSbla91';
+let sb = null, clubs = [], matches = [], standings = [], players = [];
+let page='home', selected=null, query='';
+const shortName = name => (name||'').split(/\s+/).map(w=>w[0]||'').join('').slice(0,3).toUpperCase();
+const esc = s => String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clubById = id => clubs.find(c=>String(c.id)===String(id));
+const crest = (club, mini=false) => `<div class="${mini?'mini':'crest'}">${esc(shortName(club?.name||'?'))}</div>`;
+function ptsText(n){return Number(n||0)}
+function matchScore(m){return m.played && m.home_score!==null && m.away_score!==null ? `<b style="color:var(--mint)">${m.home_score} – ${m.away_score}</b>` : '<span class="muted">À jouer</span>'}
+function matchesHTML(list){return list.map(m=>{const h=clubById(m.home_club_id), a=clubById(m.away_club_id);return `<div class="match"><div><div class="teams">${crest(h,true)}<span>${esc(h?.name||'Club')}</span></div><div class="muted" style="margin:4px 0 4px 35px">${matchScore(m)}</div><div class="teams">${crest(a,true)}<span>${esc(a?.name||'Club')}</span></div></div><div class="time">${m.match_date?esc(m.match_date):'Date à définir'}</div></div>`}).join('')}
+function tableRows(){return standings.map((x,k)=>`<tr><td>${k+1}</td><td><b>${esc(x.club)}</b></td><td>${x.matchs_joues||0}</td><td>${x.victoires||0}</td><td>${x.nuls||0}</td><td>${x.defaites||0}</td><td>${Number(x.difference_buts||0)>0?'+':''}${x.difference_buts||0}</td><td class="pts">${x.points||0}</td></tr>`).join('')}
+function grid(){return `<div class="grid">${clubs.map(c=>`<button class="club" data-club="${c.id}">${crest(c)}<div><b>${esc(c.name)}</b><div class="muted">Voir la fiche</div></div></button>`).join('')}</div>`}
+function clubDetail(id){const c=clubById(id), ps=players.filter(p=>String(p.club_id)===String(id));return `<button class="back" data-back>← Retour aux clubs</button><div class="hero" style="margin-bottom:15px"><div class="eyebrow">FICHE DU CLUB</div><div style="display:flex;align-items:center;gap:12px;margin-top:12px">${crest(c)}<h2 style="font-size:24px;margin:0">${esc(c?.name)}</h2></div><p>Effectif enregistré dans la base de données.</p></div><div class="head"><h3>Effectif</h3><small>${ps.length} joueurs</small></div>${ps.length?`<div class="players">${ps.map((p,j)=>`<div class="player"><div><b>${esc(p.name)}</b><small>${esc(p.position||'Joueur')}</small></div><span class="number">${String(j+1).padStart(2,'0')}</span></div>`).join('')}</div>`:'<div class="panel">Aucun joueur enregistré pour ce club.</div>'}`}
+function home(){return `<div class="hero"><div class="eyebrow">LE FOOTBALL, NOTRE LIGUE</div><h2>Bienvenue en<br>Floraligue 1.</h2><p>Retrouve les 18 clubs, les effectifs, les rencontres et le classement officiel du championnat.</p><button class="primary" data-page="matches">Voir les matchs →</button> <button class="secondary" data-page="clubs">Explorer les clubs</button></div><div class="stats"><div class="stat"><strong>${clubs.length}</strong><span>Clubs</span></div><div class="stat"><strong>${players.length}</strong><span>Joueurs enregistrés</span></div><div class="stat"><strong>${matches.filter(m=>m.played).length}</strong><span>Matchs joués</span></div></div><div class="cards"><section><div class="head"><h3>Matchs</h3><small>Calendrier</small></div><div class="panel">${matchesHTML(matches.slice(0,4))}<button class="secondary" style="width:100%;margin-top:10px" data-page="matches">Tous les matchs</button></div></section><section><div class="head"><h3>Classement</h3><small>Top 5</small></div><div class="panel"><div class="tablewrap"><table><thead><tr><th>#</th><th>Club</th><th>Pts</th></tr></thead><tbody>${standings.slice(0,5).map((x,k)=>`<tr><td>${k+1}</td><td>${esc(x.club)}</td><td class="pts">${x.points||0}</td></tr>`).join('')}</tbody></table></div><button class="secondary" style="width:100%;margin-top:10px" data-page="table">Classement complet</button></div></section></div><div class="head"><h3>Les clubs</h3><small>${clubs.length} équipes</small></div>${grid()}`}
+function clubsPage(){return selected!==null?clubDetail(selected):`<div class="head"><h3>Les clubs</h3><small>Choisis un club pour voir son effectif</small></div><input class="search" id="search" placeholder="Rechercher un club…" value="${esc(query)}">${grid()}`}
+function matchesPage(){return `<div class="head"><h3>Calendrier des matchs</h3><small>${matches.length} rencontres</small></div><div class="panel">${matchesHTML(matches)}</div>`}
+function profilePage(){return `<div class="hero"><div class="eyebrow">PROFIL & INFORMATIONS</div><h2>Floraligue 1</h2><p>Le championnat fictif, désormais relié à sa base de données.</p></div><div class="head"><h3>À propos</h3></div><div class="panel"><p style="font-size:13px;line-height:1.6;color:#c3d1e5">Les clubs, joueurs, matchs et le classement sont chargés depuis Supabase. L’administration nécessite une connexion sécurisée.</p><p class="notice" id="connectionStatus">Connexion en cours…</p></div>`}
+function adminPage(){return `<div class="head"><h3>Administration des scores</h3><small>Réservé au compte autorisé</small></div><div class="panel" id="adminArea"><p>Connecte-toi avec ton compte administrateur.</p><label>Adresse e-mail<input class="field" id="loginEmail" type="email" autocomplete="username" placeholder="Adresse e-mail"></label><label>Mot de passe<input class="field" id="loginPassword" type="password" autocomplete="current-password" placeholder="Mot de passe"></label><button class="primary" id="loginBtn">Se connecter</button><p class="notice">Le mot de passe est envoyé directement à Supabase Auth, jamais enregistré dans le code du site.</p></div>`}
+function render(){document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));const el=document.getElementById('content');el.innerHTML=page==='home'?home():page==='clubs'?clubsPage():page==='matches'?matchesPage():page==='table'?`<div class="head"><h3>Classement</h3><small>Calculé automatiquement depuis les scores</small></div><div class="tablewrap"><table><thead><tr><th>#</th><th>Club</th><th>MJ</th><th>V</th><th>N</th><th>D</th><th>Diff.</th><th>Pts</th></tr></thead><tbody>${tableRows()}</tbody></table></div>`:page==='admin'?adminPage():profilePage();bind();if(page==='admin')bindAdmin()}
+function bind(){document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>{page=b.dataset.page;selected=null;query='';render();window.scrollTo({top:0,behavior:'smooth'})});document.querySelectorAll('[data-club]').forEach(b=>b.onclick=()=>{selected=b.dataset.club;page='clubs';render()});const back=document.querySelector('[data-back]');if(back)back.onclick=()=>{selected=null;render()};const s=document.getElementById('search');if(s)s.oninput=()=>{query=s.value;document.querySelectorAll('.club').forEach(c=>c.classList.toggle('hide',!c.innerText.toLowerCase().includes(query.toLowerCase())))} }
+async function refreshData(){if(!sb){document.getElementById('content').innerHTML=`<div class="hero"><h2>Connexion à configurer</h2><p>Le site est prêt, mais il manque encore la clé Publishable de Supabase dans le fichier.</p><p>Ne mets jamais de clé Secret ou service_role dans ce site.</p></div>`;return}try{const [c,p,m,t]=await Promise.all([sb.from('clubs').select('*').order('id'),sb.from('players').select('*').order('id'),sb.from('matches').select('*').order('id'),sb.from('classement').select('*').order('points',{ascending:false}).order('difference_buts',{ascending:false})]);if(c.error)throw c.error;if(p.error)throw p.error;if(m.error)throw m.error;if(t.error)throw t.error;clubs=c.data||[];players=p.data||[];matches=m.data||[];standings=t.data||[];render();const st=document.getElementById('connectionStatus');if(st)st.textContent='Connecté à Supabase.';}catch(e){console.error(e);const el=document.getElementById('content');el.insertAdjacentHTML('afterbegin',`<div class="panel" style="border-color:#b75b5b;color:#ffd0d0">Impossible de charger les données : ${esc(e.message||'erreur de connexion')}. Vérifie les clés et les droits de lecture dans Supabase.</div>`);}}
+async function bindAdmin(){if(!sb)return;const area=document.getElementById('adminArea');const {data:{session}}=await sb.auth.getSession();if(session){showAdminScores();return}const btn=document.getElementById('loginBtn');if(btn)btn.onclick=async()=>{btn.disabled=true;btn.textContent='Connexion…';const {error}=await sb.auth.signInWithPassword({email:document.getElementById('loginEmail').value.trim(),password:document.getElementById('loginPassword').value});if(error){alert('Connexion impossible : '+error.message);btn.disabled=false;btn.textContent='Se connecter';return}showAdminScores()}}
+async function showAdminScores(){const area=document.getElementById('adminArea');if(!area)return;const {data:{user}}=await sb.auth.getUser();const {data:admin,error}=await sb.from('admin_users').select('user_id').eq('user_id',user.id).maybeSingle();if(error||!admin){await sb.auth.signOut();area.innerHTML='<p>Ce compte n’est pas autorisé à modifier les scores.</p>';return}area.innerHTML=`<p>Connecté en tant qu’administrateur.</p><label>Match<select class="field" id="scoreMatch">${matches.map(m=>`<option value="${m.id}">${esc(clubById(m.home_club_id)?.name)} – ${esc(clubById(m.away_club_id)?.name)}</option>`).join('')}</select></label><div class="cards"><label>Score domicile<input class="field" id="homeScore" type="number" min="0" step="1" value="0"></label><label>Score extérieur<input class="field" id="awayScore" type="number" min="0" step="1" value="0"></label></div><button class="primary" id="saveScore">Enregistrer le score</button> <button class="secondary" id="logoutBtn">Déconnexion</button><p class="notice">Le classement se recalculera automatiquement après l’enregistrement.</p>`;document.getElementById('saveScore').onclick=async()=>{const id=document.getElementById('scoreMatch').value,h=Number(document.getElementById('homeScore').value),a=Number(document.getElementById('awayScore').value);if(!id||!Number.isInteger(h)||!Number.isInteger(a)||h<0||a<0){alert('Entre deux scores entiers positifs.');return}const {error}=await sb.from('matches').update({home_score:h,away_score:a,played:true}).eq('id',id);if(error){alert('Erreur : '+error.message+' — vérifie les règles de sécurité SQL.');return}alert('Score enregistré !');await refreshData();page='admin';render();};document.getElementById('logoutBtn').onclick=async()=>{await sb.auth.signOut();render()}}
+document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('button[data-page]');if(b){page=b.dataset.page;selected=null;render()}});
+document.getElementById('adminOpen').addEventListener('click',()=>{page='admin';render();window.scrollTo({top:0,behavior:'smooth'})});
+document.getElementById('adminOpen').textContent='🔐 Admin';
+if(SUPABASE_ANON_KEY==='sb_publishable_XQMiBUn5hSK3kj2lIVYwTg_pBSbla91'){render();document.getElementById('content').insertAdjacentHTML('afterbegin','<div class="panel" style="margin-bottom:12px">Le site est prêt à être connecté. Il reste à ajouter la clé Publishable Supabase dans le fichier.</div>');}
+else {const tag=document.createElement('script');tag.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';tag.onload=()=>{sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);refreshData()};tag.onerror=()=>{document.getElementById('content').innerHTML='<div class="panel">Impossible de charger la bibliothèque Supabase. Vérifie ta connexion Internet.</div>'};document.head.appendChild(tag)}
 </script>
-</body>
-</html>
+</body></html>
